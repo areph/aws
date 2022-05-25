@@ -1,0 +1,34 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "App Build",
+            "type": "shell",
+            "command": "./gradlew build",
+            "problemMatcher": []
+        },
+        {
+            "label": "App Run",
+            "type": "shell",
+            "command": "./gradlew run",
+            "problemMatcher": []
+        },
+        {
+            "label": "App Clean",
+            "type": "shell",
+            "command": "./gradlew clean",
+            "problemMatcher": []
+        },
+        {
+            "label": "App Check",
+            "type": "shell",
+            "command": "./gradlew check"
+        },
+        {
+            "label": "App Eclipse",
+            "type": "shell",
+            "command": "./gradlew eclipse",
+            "problemMatcher": []
+        }
+    ]
+}
