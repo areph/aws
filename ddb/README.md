@@ -31,3 +31,13 @@ aws dynamodb scan --table-name Music --endpoint-url http://localhost:8000
 ```shell
 python python/ddb-scan.py
 ```
+
+### PartiQL
+
+```shell
+python python/partiql.py 
+```
+
+### Documentation
+
+[Boto3 Docs for DynamoDB](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/dynamodb.html)
