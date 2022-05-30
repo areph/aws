@@ -1,0 +1,29 @@
+{
+    "Music": [
+        {
+            "PutRequest": {
+                "Item": {
+                    "MusicID": { "S": "1" },
+                    "ReleaseDate": { "S": "20220608" }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "MusicID": { "S": "2" },
+                    "ReleaseDate": { "S": "20220609" }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "MusicID": { "S": "3" },
+                    "ReleaseDate": { "S": "20220608" },
+                    "Singer": { "S": "John"}
+                }
+            }
+        }
+    ]
+}

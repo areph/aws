@@ -1,0 +1,27 @@
+{
+    "KeySchema": [
+        {
+            "AttributeName": "MusicID",
+            "KeyType": "HASH"
+        },
+        {
+            "AttributeName": "ReleaseDate",
+            "KeyType": "RANGE"
+        }
+    ],
+    "AttributeDefinitions": [
+        {
+            "AttributeName": "MusicID",
+            "AttributeType": "S"
+        },
+        {
+            "AttributeName": "ReleaseDate",
+            "AttributeType": "S"
+        }
+    ],
+    "TableName": "Music",
+    "ProvisionedThroughput": {
+        "ReadCapacityUnits": 1,
+        "WriteCapacityUnits": 1
+    }
+}
