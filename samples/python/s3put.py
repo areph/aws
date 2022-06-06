@@ -1,0 +1,16 @@
+# 依存関係を定義
+import boto3
+
+region = 'ap-northeast-1'
+bucket_name = 'lab-bucket-0358-2851-52-test'
+file_name = '../data/lavot.jpg'
+key = 'sample/lavot.jpg'
+
+# s3クライアント作成
+resource = boto3.resource('s3', region_name=region)
+bucket = resource.Bucket(bucket_name)
+
+# バケットへアップロード
+print('S3バケットへアップロード')
+bucket.upload_file(file_name, key)
+print(f'./{file_name} -> s3://{bucket_name}/{key}\n')
