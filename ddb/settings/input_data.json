@@ -1,27 +1,56 @@
 {
-    "Music": [
+    "Demo-Music": [
         {
             "PutRequest": {
                 "Item": {
-                    "MusicID": { "S": "1" },
-                    "ReleaseDate": { "S": "20220608" }
+                    "Singer": {
+                        "S": "John"
+                    },
+                    "Title": {
+                        "S": "ABC"
+                    }
                 }
             }
         },
         {
             "PutRequest": {
                 "Item": {
-                    "MusicID": { "S": "2" },
-                    "ReleaseDate": { "S": "20220609" }
+                    "Singer": {
+                        "S": "Marry"
+                    },
+                    "Title": {
+                        "S": "Hi"
+                    }
                 }
             }
         },
         {
             "PutRequest": {
                 "Item": {
-                    "MusicID": { "S": "3" },
-                    "ReleaseDate": { "S": "20220608" },
-                    "Singer": { "S": "John"}
+                    "Singer": {
+                        "S": "Bob"
+                    },
+                    "Title": {
+                        "S": "Hello"
+                    },
+                    "ReleaseDate": {
+                        "S": "20220610"
+                    }
+                }
+            }
+        },
+        {
+            "PutRequest": {
+                "Item": {
+                    "Singer": {
+                        "S": "John"
+                    },
+                    "Title": {
+                        "S": "XYZ"
+                    },
+                    "ReleaseDate": {
+                        "S": "20220610"
+                    }
                 }
             }
         }

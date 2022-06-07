@@ -1,25 +1,25 @@
 {
     "KeySchema": [
         {
-            "AttributeName": "MusicID",
+            "AttributeName": "Singer",
             "KeyType": "HASH"
         },
         {
-            "AttributeName": "ReleaseDate",
+            "AttributeName": "Title",
             "KeyType": "RANGE"
         }
     ],
     "AttributeDefinitions": [
         {
-            "AttributeName": "MusicID",
+            "AttributeName": "Singer",
             "AttributeType": "S"
         },
         {
-            "AttributeName": "ReleaseDate",
+            "AttributeName": "Title",
             "AttributeType": "S"
         }
     ],
-    "TableName": "Music",
+    "TableName": "Demo-Music",
     "ProvisionedThroughput": {
         "ReadCapacityUnits": 1,
         "WriteCapacityUnits": 1

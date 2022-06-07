@@ -7,7 +7,7 @@ ref: https://docs.aws.amazon.com/ja_jp/amazondynamodb/latest/developerguide/Dyna
 ### DDBローカルを起動
 
 ```shell
-docker-compose up
+docker-compose up -d
 ```
 
 ### Table作成
@@ -23,21 +23,44 @@ aws dynamodb batch-write-item --request-items file://settings/input_data.json --
 ### データ確認(Scan)
 
 ```shell
-aws dynamodb scan --table-name Music --endpoint-url http://localhost:8000
+aws dynamodb scan --table-name Demo-Music --endpoint-url http://localhost:8000  --return-consumed-capacity TOTAL
 ```
 
-### PythonのSDKを利用してScan実行
+### データ検索(Query)
+```shell
+aws dynamodb query --key-condition-expression "Singer = :v1" --expression-attribute-values '{":v1": {"S": "John"}}' --table-name Demo-Music --endpoint-url http://localhost:8000 --return-consumed-capacity TOTAL 
+```
+
+Countのみ
+```shell
+aws dynamodb query --select COUNT --key-condition-expression "Singer = :v1" --expression-attribute-values '{":v1": {"S": "John"}}' --table-name Demo-Music --endpoint-url http://localhost:8000
+```
+
+### データ取得(GetItem:結果整合性)
 
 ```shell
-python python/ddb-scan.py
+aws dynamodb get-item --table-name Demo-Music --endpoint-url http://localhost:8000 --key '{"Singer": {"S": "John"}, "Title": {"S": "XYZ"}}' --return-consumed-capacity TOTAL
 ```
 
-### PartiQL
+### データ取得(GetItem:強い整合性)
 
 ```shell
-python python/partiql.py 
+aws dynamodb get-item --table-name Demo-Music --endpoint-url http://localhost:8000 --key '{"Singer": {"S": "John"}, "Title": {"S": "XYZ"}}' --consistent-read --return-consumed-capacity TOTAL
 ```
 
-### Documentation
+### データ追加・更新(UpdateItem)
 
-[Boto3 Docs for DynamoDB](https://boto3.amazonaws.com/v1/documentation/api/latest/guide/dynamodb.html)
+```shell
+aws dynamodb update-item --table-name Demo-Music --endpoint-url http://localhost:8000 --key '{"Singer": {"S": "Yan"}, "Title": {"S": "Super"}}'
+```
+
+### データ削除(DeleteItem)
+
+```shell
+aws dynamodb delete-item --table-name Demo-Music --endpoint-url http://localhost:8000 --key '{"Singer": {"S": "Yan"}, "Title": {"S": "Super"}}'
+```
+
+### Table削除
+```shell
+aws dynamodb delete-table --table-name Demo-Music --endpoint-url http://localhost:8000
+```
