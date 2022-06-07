@@ -1,7 +1,4 @@
 # 依存関係を定義
-from ast import Expression
-from cmath import rect
-from tarfile import RECORDSIZE
 import boto3
 
 region = 'ap-northeast-1'
