@@ -10,7 +10,7 @@ def partiql():
         region_name='ap-northeast-1'
     )
     res = client.execute_statement(
-        Statement="SELECT * FROM Music WHERE Singer IN ['John', 'Marry']")
+        Statement='SELECT * FROM "Demo-Music" WHERE Singer IN [\'John\', \'Marry\']')
     print(json.dumps(res, indent=2))
 
 
