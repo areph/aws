@@ -20,7 +20,26 @@ table = dynamodb.create_table(
     ],
     AttributeDefinitions=[
         {'AttributeName': 'Singer', 'AttributeType': 'S'},
-        {'AttributeName': 'Title', 'AttributeType': 'S'}
+        {'AttributeName': 'Title', 'AttributeType': 'S'},
+        {'AttributeName': 'ReleaseDate', 'AttributeType': 'S'},
+    ],
+    LocalSecondaryIndexes=[
+        {
+            'IndexName': 'ReleaseIndex',
+            'KeySchema': [
+                {
+                    'AttributeName': 'Singer',
+                    'KeyType': 'HASH'
+                },
+                {
+                    'AttributeName': 'ReleaseDate',
+                    'KeyType': 'RANGE'
+                },
+            ],
+            'Projection': {
+                'ProjectionType': 'ALL',
+            }
+        },
     ],
     ProvisionedThroughput={'ReadCapacityUnits': 5, 'WriteCapacityUnits': 5}
 )

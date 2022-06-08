@@ -17,6 +17,28 @@
         {
             "AttributeName": "Title",
             "AttributeType": "S"
+        },
+        {
+            "AttributeName": "ReleaseDate",
+            "AttributeType": "S"
+        }
+    ],
+    "LocalSecondaryIndexes": [
+        {
+            "IndexName": "ReleaseIndex",
+            "KeySchema": [
+                {
+                    "AttributeName": "Singer",
+                    "KeyType": "HASH"
+                },
+                {
+                    "AttributeName": "ReleaseDate",
+                    "KeyType": "RANGE"
+                }
+            ],
+            "Projection": {
+                "ProjectionType": "ALL"
+            }
         }
     ],
     "TableName": "Demo-Music",
