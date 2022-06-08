@@ -6,7 +6,7 @@ import json
 def partiql():
     client = boto3.client(
         'dynamodb',
-        endpoint_url='http://localhost:8000',
+        # endpoint_url='http://localhost:8000', for Docker
         region_name='ap-northeast-1'
     )
     res = client.execute_statement(
