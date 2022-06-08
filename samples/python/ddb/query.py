@@ -1,7 +1,6 @@
 # 依存関係を定義
-from curses import keyname
 import boto3
-import time
+from boto3.dynamodb.conditions import Key
 
 region_name = 'ap-northeast-1'
 
@@ -14,8 +13,13 @@ dynamodb = boto3.resource('dynamodb', region_name=region_name)
 table = dynamodb.Table('Demo-Music')
 
 # Tableを操作してデータ取得(クエリ)
-res = table.query(
-    KeyConditionExpression="Singer = :v1",
-    ExpressionAttributeValues={":v1": "John"})
+print('---ex) Singer conditions---')
+res = table.query(KeyConditionExpression=Key('Singer').eq('John'))
+items = res['Items']
+print(items)
 
-print(res['Items'])
+print('---ex) Singer conditions with SortKey---')
+res = table.query(
+    KeyConditionExpression=Key('Singer').eq('John') & Key('Title').eq('ABC'))
+items = res['Items']
+print(items)

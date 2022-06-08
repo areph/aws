@@ -16,4 +16,4 @@ table = dynamodb.Table('Demo-Music')
 # テーブル削除
 table.delete()
 
-print(f'テーブル作成終了：{time.gmtime()}')
+print(f'テーブル削除終了：{time.gmtime()}')
