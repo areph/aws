@@ -42,10 +42,54 @@ aws lambda create-function \
 --handler hello.lambda_handler \
 --role arn:aws:iam::${ACCOUNT_ID}:role/lambdaPollyRole
 
+or
+
 # zip化したソースコードをLambdaへアップロードして更新
 aws lambda update-function-code \
 --zip-file fileb://hello.zip \
 --function-name hello-function
+
+# 呼び出すhandler名を変更
+aws lambda update-function-configuration \
+--function-name hello-function \
+--handler hello.lambda_handler
+```
+
+ex) ddbquery.py を ddb-search-function 関数として作成する場合
+```shell
+# 対象ソースをzip化
+zip ddbquery.zip ddbquery.py
+
+# zip化したソースコードをLambdaへアップロードして作成
+aws lambda create-function \
+--zip-file fileb://ddbquery.zip \
+--function-name ddb-search-function \
+--runtime python3.9 \
+--handler ddbquery.lambda_handler \
+--role arn:aws:iam::536655976692:role/lambdaPollyRole
+
+# 検索条件などハードコーディングしている箇所を外部に切り出して、環境変数やペイロードから読み込ませる
+
+# ソースコードを変更したらzip化
+zip ddbquery.zip ddbquery.py
+
+# 環境変数を設定
+aws lambda update-function-configuration \
+--function-name ddb-search-function \
+--environment "Variables={TABLE_NAME=Notes}"
+
+# zip化したソースコードをLambdaへアップロードして更新
+aws lambda update-function-code \
+--zip-file fileb://ddbquery.zip \
+--function-name ddb-search-function
+
+# ペイロードを付けて検索
+aws lambda invoke \
+--function-name ddb-search-function \
+--payload fileb://event.json reponse.txt
+
+# MCからもテスト
+
 ```
 
 ### Lambda関数実行
