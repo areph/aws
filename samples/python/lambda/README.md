@@ -66,7 +66,7 @@ aws lambda create-function \
 --function-name ddb-search-function \
 --runtime python3.9 \
 --handler ddbquery.lambda_handler \
---role arn:aws:iam::536655976692:role/lambdaPollyRole
+--role arn:aws:iam::${ACCOUNT_ID}:role/lambdaPollyRole
 
 # 検索条件などハードコーディングしている箇所を外部に切り出して、環境変数やペイロードから読み込ませる
 
