@@ -5,7 +5,7 @@ from tarfile import RECORDSIZE
 import boto3
 
 region = 'ap-northeast-1'
-bucket_name = 'lab-bucket-0358-2851-52-test'
+bucket_name = '好きなバケット名'
 key = 'sample/lavot.jpg'
 
 # s3クライアント作成

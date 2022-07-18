@@ -2,7 +2,7 @@
 import boto3
 
 region = 'ap-northeast-1'
-bucket_name = 'lab-bucket-0358-2851-52-test'
+bucket_name = '好きなバケット名'
 file_name = '../../data/sample.csv'
 key = 'sample.csv'
 
