@@ -31,6 +31,11 @@ aws lambda update-function-configuration \
 
 ex) hello.py を hello-function 関数として作成する場合
 ```shell
+cd aws/samples/python/lambda/
+
+# 各AWSアカウントIDを設定
+ACCOUNT_ID=
+
 # 対象ソースをzip化
 zip hello.zip hello.py
 
@@ -42,14 +47,29 @@ aws lambda create-function \
 --handler hello.lambda_handler \
 --role arn:aws:iam::${ACCOUNT_ID}:role/lambdaPollyRole
 
-or
+# Lambdaを実行するとreponse.txtに出力されます
+aws lambda invoke \
+--function-name hello-function \
+reponse.txt
 
-# zip化したソースコードをLambdaへアップロードして更新
+# 実行ログも見たい場合はlog-type Tailにしてqueryでよしなに見れます
+aws lambda invoke \
+--function-name hello-function \
+--log-type Tail \
+reponse.txt \
+--query 'LogResult' | tr -d '"' | base64 -d
+
+# 作成後、ソースファイルや各種設定を更新したい場合
+
+## ソースコードを変更したらzip化
+zip hello.zip hello.py
+
+## zip化したソースコードをLambdaへアップロードして更新
 aws lambda update-function-code \
 --zip-file fileb://hello.zip \
 --function-name hello-function
 
-# 呼び出すhandler名を変更
+## 呼び出すhandler名を変更
 aws lambda update-function-configuration \
 --function-name hello-function \
 --handler hello.lambda_handler
@@ -57,6 +77,8 @@ aws lambda update-function-configuration \
 
 ex) ddbquery.py を ddb-search-function 関数として作成する場合
 ```shell
+cd aws/samples/python/lambda/
+
 # 対象ソースをzip化
 zip ddbquery.zip ddbquery.py
 
@@ -86,7 +108,10 @@ aws lambda update-function-code \
 # ペイロードを付けて検索
 aws lambda invoke \
 --function-name ddb-search-function \
---payload fileb://event.json reponse.txt
+--payload fileb://event.json \
+--log-type Tail \
+reponse.txt \
+--query 'LogResult' | tr -d '"' | base64 -d
 
 # MCからもテスト
 
