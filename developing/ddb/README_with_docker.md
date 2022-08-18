@@ -1,15 +1,28 @@
 ## DynamoDB サンプル集
 
-
 ## ローカルにコンテナを立ててテスト的にDynamoDBを操作する
+
+実態としてDynamoDBを作成してしまうと料金がかかってしまったり各々で開発するのに不便なため、ローカル環境にDynamoDBを用意して好きに操作できる環境をDockerで構築します
 
 docker-compose.yml に DynamoDBのイメージを記述しコンテナを起動した後、各種コマンドに `--endpoint-url http://localhost:8000` を付けて実行します
 
 ※：Docker/docker-composeのインストールが必要です
 
-ref: https://docs.aws.amazon.com/ja_jp/amazondynamodb/latest/developerguide/DynamoDBLocal.DownloadingAndRunning.html#docker
-ref: https://matsuand.github.io/docs.docker.jp.onthefly/compose/install/
+- ref: https://docs.aws.amazon.com/ja_jp/amazondynamodb/latest/developerguide/DynamoDBLocal.DownloadingAndRunning.html#docker
+- ref: https://matsuand.github.io/docs.docker.jp.onthefly/compose/install/
 
+### Cloud9 で試す
+
+- Cloud9 を起動
+- すでにDockerはインストール済みのため、docker-composeをインストール
+
+```shell
+DOCKER_CONFIG=${DOCKER_CONFIG:-$HOME/.docker}
+mkdir -p $DOCKER_CONFIG/cli-plugins
+curl -SL https://github.com/docker/compose/releases/download/v2.4.1/docker-compose-linux-x86_64 -o $DOCKER_CONFIG/cli-plugins/docker-compose
+chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
+docker compose version
+```
 ### DDBローカルを起動
 
 ```shell
