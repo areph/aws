@@ -3,7 +3,7 @@ from boto3.s3.transfer import TransferConfig
 
 region = 'ap-northeast-1'
 bucket_name = '好きなバケット名'
-file_name = '../../data/50MB.dummy'
+file_name = './50MB.dummy'
 key = 'sample/50MB.dummy_sdk.jpg'
 
 # s3クライアント作成

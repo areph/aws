@@ -7,6 +7,7 @@ session = boto3.session.Session()
 
 # セッションからリージョンを取得
 current_region = session.region_name
+print(current_region)
 
 # セッションから低レベルAPIを操作
 client = session.client('s3')
