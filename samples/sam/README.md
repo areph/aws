@@ -38,6 +38,14 @@ sam local start-api
 sam deploy --guided
 ```
 
+### 変更を検知して自動デプロイ
+
+```shell
+sam sync --stack-name ${STACK_NAME} --region ap-northeast-1 --watch
+```
+
+Lambda関数のコードを修正して保存すると自動でデプロイします
+
 ### SAMで作成したスタックを削除
 
 ```shell
