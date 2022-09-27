@@ -1,14 +1,31 @@
-# Welcome to your CDK TypeScript project
+# Serverless Sample Application for CDK
 
-This is a blank project for CDK development with TypeScript.
+## AWSリソース
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+- Lambda
+- API Gateway
 
-## Useful commands
+## 各種コマンド
 
-* `npm run build`   compile typescript to js
-* `npm run watch`   watch for changes and compile
-* `npm run test`    perform the jest unit tests
-* `cdk deploy`      deploy this stack to your default AWS account/region
-* `cdk diff`        compare deployed stack with current state
-* `cdk synth`       emits the synthesized CloudFormation template
+- cdk synth
+  - CDKのコードからCloudFormationのテンプレートを生成する
+- cdk deploy
+  - CloudFormationにCDKで定義したAWSリソースをスタックとしてデプロイする
+- cdk diff
+  - すでにデプロイ済みのリソースとローカルの差分を出す
+- cdk watch
+  - 変更を検知して自動でデプロイする
+- cdk destroy
+  - デプロイしたスタックを削除する
+
+### CDKで作成されたtemplateに対してSAMでローカル実行
+
+```
+sam local invoke -t ./cdk.out/ServerlessSampleAppStack.template.json demo-serverless-sample-app-function-for-cdk
+```
+
+CDKで作成されたtemplateに対してSAMでローカルのAPIを実行
+
+```
+sam local start-api -t ./cdk.out/ServerlessSampleAppStack.template.json
+```
