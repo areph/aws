@@ -1,0 +1,33 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: >-
+  demo-sample-sam-app
+Transform:
+- AWS::Serverless-2016-10-31
+Globals:
+  Function:
+    Tracing: Active
+  Api:
+    TracingEnabled: True
+
+Resources:
+  helloFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: demo-serverless-sample-app-function-for-sam
+      Handler: src/handlers/index.handler
+      Runtime: nodejs16.x
+      Architectures:
+        - x86_64
+      MemorySize: 128
+      Timeout: 100
+      Description: SAMで作成したサンプルLambda関数
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            Path: /
+            Method: GET
+Outputs:
+  WebEndpoint:
+    Description: "API Gateway endpoint URL for Prod stage"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
