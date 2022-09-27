@@ -19,12 +19,14 @@ cdk synth
 cdk deploy
 cdk deploy --hotswap # 差分更新-開発用に留める
 cdk diff
+cdk watch # 変更を検知して自動デプロイ
 cdk destroy # Stack削除
 ```
 
 ### CDKで作成されたtemplateに対してSAMでローカル実行
 
 ```
+sam local invoke -t ./cdk.out/xxxxStack.template.json ${FunctionName}
 sam local invoke -e event.json -t ./cdk.out/xxxxStack.template.json ${FunctionName}
 ```
 
