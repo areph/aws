@@ -1,0 +1,85 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  callcenter-workflow-app
+Globals:
+  Function:
+    Tracing: Active
+  Api:
+    TracingEnabled: True
+
+Resources:
+  CallCenterStateMachine:
+    Type: AWS::Serverless::StateMachine
+    Properties:
+      DefinitionUri: statemachine/call_center.asl.json
+      DefinitionSubstitutions:
+        OpenCaseFunctionArn: !GetAtt OpenCaseFunction.Arn
+        AssignCaseFunctionArn: !GetAtt AssignCaseFunction.Arn
+        CloseCaseFunctionArn: !GetAtt CloseCaseFunction.Arn
+        EscalateCaseFunctionArn: !GetAtt EscalateCaseFunction.Arn
+        WorkOnCaseFunctionArn: !GetAtt WorkOnCaseFunction.Arn
+      Policies:
+        - LambdaInvokePolicy:
+            FunctionName: !Ref OpenCaseFunction
+        - LambdaInvokePolicy:
+            FunctionName: !Ref AssignCaseFunction
+        - LambdaInvokePolicy:
+            FunctionName: !Ref CloseCaseFunction
+        - LambdaInvokePolicy:
+            FunctionName: !Ref EscalateCaseFunction
+        - LambdaInvokePolicy:
+            FunctionName: !Ref WorkOnCaseFunction
+
+  OpenCaseFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/OpenCaseFunction/
+      Handler: app.handler
+      Runtime: nodejs16.x
+      Architectures:
+        - x86_64
+
+  AssignCaseFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/AssignCaseFunction/
+      Handler: app.handler
+      Runtime: nodejs16.x
+      Architectures:
+        - x86_64
+
+  CloseCaseFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/CloseCaseFunction/
+      Handler: app.handler
+      Runtime: nodejs16.x
+      Architectures:
+        - x86_64
+
+  EscalateCaseFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/EscalateCaseFunction/
+      Handler: app.handler
+      Runtime: nodejs16.x
+      Architectures:
+        - x86_64
+
+  WorkOnCaseFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: functions/WorkOnCaseFunction/
+      Handler: app.handler
+      Runtime: nodejs16.x
+      Architectures:
+        - x86_64
+
+Outputs:
+  CallCenterStateMachineArn:
+    Description: "Stock Trading state machine ARN"
+    Value: !Ref CallCenterStateMachine
+  CallCenterStateMachineRole:
+    Description: "IAM Role created for CallCenter state machine based on the specified SAM Policy Templates"
+    Value: !GetAtt CallCenterStateMachineRole.Arn
