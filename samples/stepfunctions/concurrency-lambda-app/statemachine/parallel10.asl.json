@@ -1,0 +1,176 @@
+{
+    "Comment": "Execute Lambda Functions for 5 parallel",
+    "StartAt": "Parallel",
+    "States": {
+        "Parallel": {
+            "Type": "Parallel",
+            "Next": "Final State",
+            "Branches": [
+                {
+                    "StartAt": "InvokeFunc01",
+                    "States": {
+                        "InvokeFunc01": {
+                            "Type": "Task",
+                            "Resource": "arn:aws:states:::lambda:invoke",
+                            "Parameters": {
+                                "FunctionName": "${SleepFunctionArn}",
+                                "Payload": {
+                                    "flg": "sleep"
+                                }
+                            },
+                            "End": true
+                        }
+                    }
+                },
+                {
+                    "StartAt": "InvokeFunc02",
+                    "States": {
+                        "InvokeFunc02": {
+                            "Type": "Task",
+                            "Resource": "arn:aws:states:::lambda:invoke",
+                            "Parameters": {
+                                "FunctionName": "${SleepFunctionArn}",
+                                "Payload": {
+                                    "flg": "sleep"
+                                }
+                            },
+                            "End": true
+                        }
+                    }
+                },
+                {
+                    "StartAt": "InvokeFunc03",
+                    "States": {
+                        "InvokeFunc03": {
+                            "Type": "Task",
+                            "Resource": "arn:aws:states:::lambda:invoke",
+                            "Parameters": {
+                                "FunctionName": "${SleepFunctionArn}",
+                                "Payload": {
+                                    "flg": "sleep"
+                                }
+                            },
+                            "End": true
+                        }
+                    }
+                },
+                {
+                    "StartAt": "InvokeFunc04",
+                    "States": {
+                        "InvokeFunc04": {
+                            "Type": "Task",
+                            "Resource": "arn:aws:states:::lambda:invoke",
+                            "Parameters": {
+                                "FunctionName": "${SleepFunctionArn}",
+                                "Payload": {
+                                    "flg": "sleep"
+                                }
+                            },
+                            "End": true
+                        }
+                    }
+                },
+                {
+                    "StartAt": "InvokeFunc05",
+                    "States": {
+                        "InvokeFunc05": {
+                            "Type": "Task",
+                            "Resource": "arn:aws:states:::lambda:invoke",
+                            "Parameters": {
+                                "FunctionName": "${SleepFunctionArn}",
+                                "Payload": {
+                                    "flg": "sleep"
+                                }
+                            },
+                            "End": true
+                        }
+                    }
+                },
+                {
+                    "StartAt": "InvokeFunc06",
+                    "States": {
+                        "InvokeFunc06": {
+                            "Type": "Task",
+                            "Resource": "arn:aws:states:::lambda:invoke",
+                            "Parameters": {
+                                "FunctionName": "${SleepFunctionArn}",
+                                "Payload": {
+                                    "flg": "sleep"
+                                }
+                            },
+                            "End": true
+                        }
+                    }
+                },
+                {
+                    "StartAt": "InvokeFunc07",
+                    "States": {
+                        "InvokeFunc07": {
+                            "Type": "Task",
+                            "Resource": "arn:aws:states:::lambda:invoke",
+                            "Parameters": {
+                                "FunctionName": "${SleepFunctionArn}",
+                                "Payload": {
+                                    "flg": "sleep"
+                                }
+                            },
+                            "End": true
+                        }
+                    }
+                },
+                {
+                    "StartAt": "InvokeFunc08",
+                    "States": {
+                        "InvokeFunc08": {
+                            "Type": "Task",
+                            "Resource": "arn:aws:states:::lambda:invoke",
+                            "Parameters": {
+                                "FunctionName": "${SleepFunctionArn}",
+                                "Payload": {
+                                    "flg": "sleep"
+                                }
+                            },
+                            "End": true
+                        }
+                    }
+                },
+                {
+                    "StartAt": "InvokeFunc09",
+                    "States": {
+                        "InvokeFunc09": {
+                            "Type": "Task",
+                            "Resource": "arn:aws:states:::lambda:invoke",
+                            "Parameters": {
+                                "FunctionName": "${SleepFunctionArn}",
+                                "Payload": {
+                                    "flg": "sleep"
+                                }
+                            },
+                            "End": true
+                        }
+                    }
+                },
+                {
+                    "StartAt": "InvokeFunc10",
+                    "States": {
+                        "InvokeFunc10": {
+                            "Type": "Task",
+                            "Resource": "arn:aws:states:::lambda:invoke",
+                            "Parameters": {
+                                "FunctionName": "${SleepFunctionArn}",
+                                "Payload": {
+                                    "flg": "sleep"
+                                }
+                            },
+                            "End": true
+                        }
+                    }
+                }
+            ]
+        },
+        "Final State": {
+            "Type": "Pass",
+            "End": true
+        }
+    }
+}

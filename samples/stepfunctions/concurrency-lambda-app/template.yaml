@@ -1,0 +1,51 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  concurrency-lambda-app
+
+Globals:
+  Function:
+    Timeout: 30
+    Tracing: Active
+    Layers:
+      - !Sub "arn:aws:lambda:ap-northeast-1:580247275435:layer:LambdaInsightsExtension:32"
+  Api:
+    TracingEnabled: True
+
+Resources:
+  Parallel5StateMachine:
+    Type: AWS::Serverless::StateMachine
+    Properties:
+      DefinitionUri: statemachine/parallel5.asl.json
+      DefinitionSubstitutions:
+        SleepFunctionArn: !GetAtt SleepFunction.Arn
+      Tracing:
+        Enabled: True
+      Policies:
+        - AWSXRayDaemonWriteAccess
+        - LambdaInvokePolicy:
+            FunctionName: !Ref SleepFunction
+
+  Parallel10StateMachine:
+    Type: AWS::Serverless::StateMachine
+    Properties:
+      DefinitionUri: statemachine/parallel10.asl.json
+      DefinitionSubstitutions:
+        SleepFunctionArn: !GetAtt SleepFunction.Arn
+      Tracing:
+        Enabled: True
+      Policies:
+        - AWSXRayDaemonWriteAccess
+        - LambdaInvokePolicy:
+            FunctionName: !Ref SleepFunction
+
+  SleepFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: function/
+      Handler: app.lambda_handler
+      Runtime: python3.9
+      Architectures:
+        - x86_64
+      Policies:
+        - CloudWatchLambdaInsightsExecutionRolePolicy
