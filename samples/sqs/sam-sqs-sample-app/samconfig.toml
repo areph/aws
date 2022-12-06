@@ -1,0 +1,11 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "sam-sqs-sample-app"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-yhvsblbnnpzj"
+s3_prefix = "sam-sqs-sample-app"
+region = "ap-northeast-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+image_repositories = []

@@ -1,0 +1,211 @@
+Transform: AWS::Serverless-2016-10-31
+Globals:
+  Function:
+    Timeout: 15
+    Tracing: Active
+Resources:
+  DemoSQSApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: !Sub
+        - ${ResourceName} From Stack ${AWS::StackName}
+        - ResourceName: DemoSQSApi
+      StageName: Prod
+      DefinitionBody:
+        openapi: "3.0"
+        info: {}
+        paths:
+          /api:
+            get:
+              x-amazon-apigateway-integration:
+                httpMethod: POST
+                type: aws_proxy
+                uri: !Sub arn:${AWS::Partition}:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${DemoAPIFunction.Arn}/invocations
+              responses: {}
+      EndpointConfiguration: REGIONAL
+      TracingEnabled: true
+  DemoAPIFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: !Sub
+        - Stack ${AWS::StackName} Function ${ResourceName}
+        - ResourceName: DemoAPIFunction
+      CodeUri: src/DemoAPIFunction
+      Handler: handler.handler
+      Runtime: python3.9
+      MemorySize: 256
+      Timeout: 30
+      Tracing: Active
+      Events:
+        DemoSQSApiGET:
+          Type: Api
+          Properties:
+            Path: /api
+            Method: GET
+            RestApiId: !Ref DemoSQSApi
+      Environment:
+        Variables:
+          QUEUE_NAME: !GetAtt DemoSQSAPIInsertQueue.QueueName
+          QUEUE_ARN: !GetAtt DemoSQSAPIInsertQueue.Arn
+          QUEUE_URL: !Ref DemoSQSAPIInsertQueue
+          TOPIC_NAME: !GetAtt DemoAPISQSTopic.TopicName
+          TOPIC_ARN: !Ref DemoAPISQSTopic
+      Policies:
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - sqs:SendMessage*
+                - sqs:GetQueueUrl*
+              Resource: !GetAtt DemoSQSAPIInsertQueue.Arn
+        - SNSPublishMessagePolicy:
+            TopicName: !GetAtt DemoAPISQSTopic.TopicName
+  DemoAPIFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${DemoAPIFunction}
+  DemoAPISQSTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      Subscription:
+        - Endpoint: !GetAtt DemoAPISQSFanoutQueue1.Arn
+          Protocol: sqs
+        - Endpoint: !GetAtt DemoAPISQSFanoutQueue2.Arn
+          Protocol: sqs
+  DemoSQSAPIInsertQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      MessageRetentionPeriod: 345600
+  DemoSQSAPIDDBInsertFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: !Sub
+        - Stack ${AWS::StackName} Function ${ResourceName}
+        - ResourceName: DemoSQSAPIDDBInsertFunction
+      CodeUri: src/DemoSQSAPIDDBInsertFunction
+      Handler: handler.handler
+      Runtime: python3.9
+      MemorySize: 256
+      Timeout: 30
+      Tracing: Active
+      Events:
+        DemoSQSAPIInsertQueue:
+          Type: SQS
+          Properties:
+            Queue: !GetAtt DemoSQSAPIInsertQueue.Arn
+            BatchSize: 1
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref DemoSQSAPITable
+          TABLE_ARN: !GetAtt DemoSQSAPITable.Arn
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref DemoSQSAPITable
+  DemoSQSAPIDDBInsertFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${DemoSQSAPIDDBInsertFunction}
+  DemoAPISQSFanoutQueue1:
+    Type: AWS::SQS::Queue
+    Properties:
+      MessageRetentionPeriod: 345600
+  DemoAPISQSTopicToDemoAPISQSFanoutQueue1Permission:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: sns.amazonaws.com
+            Action: sqs:SendMessage
+            Resource: !GetAtt DemoAPISQSFanoutQueue1.Arn
+            Condition:
+              ArnEquals:
+                aws:SourceArn: !Ref DemoAPISQSTopic
+      Queues:
+        - !Ref DemoAPISQSFanoutQueue1
+  DemoAPISQSFanoutQueue2:
+    Type: AWS::SQS::Queue
+    Properties:
+      MessageRetentionPeriod: 345600
+  DemoAPISQSTopicToDemoAPISQSFanoutQueue2Permission:
+    Type: AWS::SQS::QueuePolicy
+    Properties:
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: sns.amazonaws.com
+            Action: sqs:SendMessage
+            Resource: !GetAtt DemoAPISQSFanoutQueue2.Arn
+            Condition:
+              ArnEquals:
+                aws:SourceArn: !Ref DemoAPISQSTopic
+      Queues:
+        - !Ref DemoAPISQSFanoutQueue2
+  DemoAPISQSFanoutFunction1:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: !Sub
+        - Stack ${AWS::StackName} Function ${ResourceName}
+        - ResourceName: DemoAPISQSFanoutFunction1
+      CodeUri: src/DemoAPISQSFanoutFunction1
+      Handler: handler.handler
+      Runtime: python3.9
+      MemorySize: 256
+      Timeout: 30
+      Tracing: Active
+      Events:
+        DemoAPISQSFanoutQueue1:
+          Type: SQS
+          Properties:
+            Queue: !GetAtt DemoAPISQSFanoutQueue1.Arn
+            BatchSize: 1
+  DemoAPISQSFanoutFunction1LogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${DemoAPISQSFanoutFunction1}
+  DemoAPISQSFanoutFunction2:
+    Type: AWS::Serverless::Function
+    Properties:
+      Description: !Sub
+        - Stack ${AWS::StackName} Function ${ResourceName}
+        - ResourceName: DemoAPISQSFanoutFunction2
+      CodeUri: src/DemoAPISQSFanoutFunction2
+      Handler: handler.handler
+      Runtime: python3.9
+      MemorySize: 256
+      Timeout: 30
+      Tracing: Active
+      Events:
+        DemoAPISQSFanoutQueue2:
+          Type: SQS
+          Properties:
+            Queue: !GetAtt DemoAPISQSFanoutQueue2.Arn
+            BatchSize: 1
+  DemoAPISQSFanoutFunction2LogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    Properties:
+      LogGroupName: !Sub /aws/lambda/${DemoAPISQSFanoutFunction2}
+  DemoSQSAPITable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: messageId
+          AttributeType: S
+        - AttributeName: datetime
+          AttributeType: S
+      BillingMode: PAY_PER_REQUEST
+      KeySchema:
+        - AttributeName: messageId
+          KeyType: HASH
+        - AttributeName: datetime
+          KeyType: RANGE
+      StreamSpecification:
+        StreamViewType: NEW_AND_OLD_IMAGES
