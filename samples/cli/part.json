@@ -1,0 +1,16 @@
+{
+  "Parts": [
+    {
+      "ETag": "\"xxxxxxxxx\"",
+      "PartNumber": 1
+    },
+    {
+      "ETag": "\"xxxxxxxxx\"",
+      "PartNumber": 2
+    },
+    {
+      "ETag": "\"xxxxxxxxx\"",
+      "PartNumber": 3
+    }
+  ]
+}
