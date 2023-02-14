@@ -1,5 +1,14 @@
 ## DynamoDB サンプル集
 
+### 準備
+
+- Cloud9 を起動します
+- サンプルコードを git clone
+
+```shell
+git clone https://github.com/areph/aws.git
+cd ~/environment/aws/ddb
+```
 
 ### Table作成
 ```shell

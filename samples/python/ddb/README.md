@@ -1,9 +1,40 @@
 ## DynamoDB サンプル集
 
+### 準備
+
+- Cloud9 を起動します
+- サンプルコードを git clone(すでにcloneされている場合は省略してください)
+
+```shell
+cd ~/environment
+git clone https://github.com/areph/aws.git
+```
+
+- Python のサンプルコードディレクトリへ移動します
+
+```shell
+cd ~/environment/aws/samples/python/ddb
+```
+
 ### テーブル作成
 
 ```shell
 python create_table.py
+```
+
+下記のエラーが発生した場合は
+
+```
+Traceback (most recent call last):
+  File "create_table.py", line 2, in <module>
+    import boto3
+ModuleNotFoundError: No module named 'boto3'
+```
+
+こちらのコマンドを実行して boto3 をインストールしてください
+
+```shell
+python3 -m pip install --user boto3
 ```
 
 ### データ登録

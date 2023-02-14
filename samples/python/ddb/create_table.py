@@ -2,12 +2,9 @@
 import boto3
 import time
 
-region_name = 'ap-northeast-1'
-
 # dynamodbクライアントを作成
-dynamodb = boto3.resource('dynamodb', region_name=region_name)
-#dynamodb = boto3.resource(
-#    'dynamodb', region_name=region_name, endpoint_url='http://localhost:8000') for Docker
+dynamodb = boto3.resource('dynamodb')
+#dynamodb = boto3.resource('dynamodb', endpoint_url='http://localhost:8000') for Docker
 
 print(f'テーブル作成開始：{time.gmtime()}')
 

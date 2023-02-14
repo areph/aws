@@ -4,11 +4,7 @@ import json
 
 
 def partiql():
-    client = boto3.client(
-        'dynamodb',
-        # endpoint_url='http://localhost:8000', for Docker
-        region_name='ap-northeast-1'
-    )
+    client = boto3.client('dynamodb')
     res = client.execute_statement(
         Statement='SELECT * FROM "Demo-Music" WHERE Singer IN [\'John\', \'Marry\']')
     print(json.dumps(res, indent=2))

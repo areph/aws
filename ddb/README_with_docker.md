@@ -11,9 +11,21 @@ docker-compose.yml に DynamoDBのイメージを記述しコンテナを起動�
 - ref: https://docs.aws.amazon.com/ja_jp/amazondynamodb/latest/developerguide/DynamoDBLocal.DownloadingAndRunning.html#docker
 - ref: https://matsuand.github.io/docs.docker.jp.onthefly/compose/install/
 
-### Cloud9 で試す
+### 準備(サンプルコードダウンロード)
 
-- Cloud9 を起動
+- Cloud9 を起動します
+- サンプルコードを git clone
+
+```
+git clone https://github.com/areph/aws.git
+cd ~/environment/aws/ddb
+
+```
+
+このディレクトリにある `docker-compose.yml` を使って Docker 環境を構築します。
+
+### 準備(Docker)
+
 - すでにDockerはインストール済みのため、docker-composeをインストール
 
 ```shell
@@ -22,14 +34,16 @@ mkdir -p $DOCKER_CONFIG/cli-plugins
 curl -SL https://github.com/docker/compose/releases/download/v2.4.1/docker-compose-linux-x86_64 -o $DOCKER_CONFIG/cli-plugins/docker-compose
 chmod +x $DOCKER_CONFIG/cli-plugins/docker-compose
 docker compose version
+
 ```
 ### DDBローカルを起動
 
 ```shell
-docker-compose up -d
+docker compose up -d
 ```
 
 ### Table作成
+
 ```shell
 aws dynamodb create-table --cli-input-json file://settings/create_table.json  --endpoint-url http://localhost:8000
 ```
