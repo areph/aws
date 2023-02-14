@@ -19,5 +19,6 @@ for page in page_iterator:
     if page["Count"] > 0:
         pageNumber += 1
         print("Starting page " + str(pageNumber))
-        print(json.dumps(page['Items'], indent=2))
+        for item in page['Items']:
+            print(item)
         print("End of page " + str(pageNumber) + "\n")    
